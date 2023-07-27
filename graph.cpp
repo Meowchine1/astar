@@ -15,7 +15,7 @@ void Graph::readtxt(std::string filePath)
     char innerSeparator = ' ';
     char coordinateSeparator = '(';
 
-    char nodeName;
+    std::string node;
 
     int i;
     size_t pos = 0;
@@ -34,13 +34,22 @@ void Graph::readtxt(std::string filePath)
                 {
                 case 0:
                     pos = word.find('(');
-                    std::string node = word.substr(0, pos);
-                    std::cout <<node;
+                    node = word.substr(0, pos);
+                    std::cout <<"name = "<<node << std::endl;
+                    word.erase(0, pos+1);
+
+                    pos = word.find(',');
+                    node = word.substr(0, pos);
+                    std::cout << "coord = " << node << ";";
+                    word.erase(0, pos+1);
+
+                    pos = word.find(')');
+                    node = word.substr(0, pos);
+                    std::cout << node << std::endl;
 
                     break;
 
                 default:
-
                     break;
                 }
                 i++;
