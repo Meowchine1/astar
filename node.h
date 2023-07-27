@@ -1,14 +1,14 @@
 #ifndef NODE_H
 #define NODE_H
-#include <unordered_map>
+#include <string>
 class Node
 {
 public:
     const int x, y;
-    const char name;
+    const std::string name;
     int distance = 0; // f(v)
 
-    Node(const char _name, const int _x, const int _y);
+    Node(const std::string _name, const int _x, const int _y);
 
     Node(const Node&) = delete;
     Node& operator=(const Node&) = delete;
