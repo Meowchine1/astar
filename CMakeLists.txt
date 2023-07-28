@@ -12,7 +12,7 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 set(CPP main.cpp node.cpp graph.cpp heuristic.cpp)
-set(HEADER node.h graph.h heuristic.h)
+set(HEADER node.h graph.h heuristic.h splitter.h)
 
 find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Core)
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Core)
