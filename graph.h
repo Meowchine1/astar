@@ -29,6 +29,7 @@ private:
 public:
     Graph(std::string filePath);
     int get_edge_weight(const Node& keyNode, const Node& childNode);
+    void printGraph();
 };
 
 #endif // GRAPH_H

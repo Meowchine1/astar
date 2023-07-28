@@ -104,3 +104,20 @@ int Graph::get_edge_weight(const Node& keyNode, const Node& childNode)
     return 0;
 }
 
+void printGraph()
+{
+    for (auto it = edges_weights.begin(); it != edges_weights.end(); ++it) {
+        const Node&amp; key1 = it-&gt;first;
+        const std::unordered_map&lt;Node, int&gt;&amp; innerMap = it-&gt;second;
+
+        std::cout &lt;&lt; "Outer key: " &lt;&lt; key1 &lt;&lt; std::endl;
+
+        for (auto innerIt = innerMap.begin(); innerIt != innerMap.end(); ++innerIt) {
+            const Node&amp; key2 = innerIt-&gt;first;
+            int value = innerIt-&gt;second;
+
+            std::cout &lt;&lt; "Inner key: " &lt;&lt; key2 &lt;&lt; ", Value: " &lt;&lt; value &lt;&lt; std::endl;
+        }
+    }
+}
+
