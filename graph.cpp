@@ -104,19 +104,3 @@ int Graph::get_edge_weight(const Node& keyNode, const Node& childNode)
     return 0;
 }
 
-/*
-            std::string s;
-            //std::remove_if(line.begin(), line.end(), isspace);
-            size_t pos = 0;
-            while ((pos = line.find(innerSeparator)) != std::string::npos) {
-                s = line.substr(0, pos);
-                std::cout << s;
-                line.erase(0, pos+1);
-            }
-            if(line.length() != 0)
-            {
-                std::cout << line;
-            }
-               std::cout<< std::endl;
-
-            }*/
