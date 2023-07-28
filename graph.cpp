@@ -5,6 +5,7 @@
 #include<cstring>
 #include<algorithm>
 #include <bits/stdc++.h>
+#include "splitter.h"
 
 Graph::Graph(std::string filePath){readtxt(filePath);}
 
@@ -15,41 +16,75 @@ void Graph::readtxt(std::string filePath)
     char innerSeparator = ' ';
     char coordinateSeparator = '(';
 
-    std::string node;
-
     int i;
     size_t pos = 0;
     std::ifstream in(filePath);
     std::cout<<std::endl;
+
+    std::vector<Node> nodes;
+
     if (in.is_open())
     {
         while (std::getline(in, line, lineSeparator))
         {
             i = 0;
+
+            std::string nodename;
+            int weight;
+            int x, y;
+            Node* ptrMainNode{nullptr};
+            Node* ptrNeighborNode{nullptr};
+
             std::stringstream ss(line);
             std::string word;
             while (ss >> word) { // Extract word from the stream.
 
-                switch(i)
-                {
-                case 0:
-                    pos = word.find('(');
-                    node = word.substr(0, pos);
-                    std::cout <<"name = "<<node << std::endl;
-                    word.erase(0, pos+1);
+                if(i == 0){ // for node with coordinates (first elem in line)
+                    nodename = getSubstring(word, pos, '(');
+                    x = std::stoi(getSubstring(word, pos, ','));
+                    y = std::stoi(getSubstring(word, pos, ')'));
 
-                    pos = word.find(',');
-                    node = word.substr(0, pos);
-                    std::cout << "coord = " << node << ";";
-                    word.erase(0, pos+1);
+                    // iterator to find vector element
+                    auto it = std::find_if(nodes.begin(),
+                                           nodes.end(), [&](const Node& elem) {
+                        return elem.name == nodename;
+                    });
 
-                    pos = word.find(')');
-                    node = word.substr(0, pos);
-                    std::cout << node << std::endl;
+                    if (it != nodes.end()) {
+                        ptrMainNode = &(*it);
 
-                    break;
+                        it->setX(x);
+                        it->setY(y);
+                    }
+                    else
+                    {
+                        Node node(nodename, x, y);
+                        ptrMainNode = &node;
+                        edges_weights[*ptrMainNode] =
+                                std::unordered_map<Node, int>();
 
-                default:
+                    }
+                }
+                else{
+                // for neighbors
+                    nodename = getSubstring(word, pos, '(');
+                    weight = std::stoi(getSubstring(word, pos, ')'));
+                    auto it = std::find_if(nodes.begin(),
+                                           nodes.end(), [&](const Node& elem) {
+                        return elem.name == nodename;
+                    });
+
+                    if (it != nodes.end()) {
+                        ptrNeighborNode = &(*it);
+                    }
+                    else
+                    {
+                        Node neighbornode(nodename);
+                        ptrNeighborNode = &neighbornode;
+                    }
+
+                    edges_weights[*ptrMainNode][*ptrNeighborNode] = weight;
+
                     break;
                 }
                 i++;

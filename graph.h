@@ -17,9 +17,7 @@ struct std::hash<Node>
     // and bit shifting:
 
     return ((hash<int>()(k.distance)
-             ^ (hash<std::string>()(k.name) << 1)) >> 1)
-             ^ (hash<int>()(k.x) << 1)
-             ^ (hash<int>()(k.y) << 1);
+             ^ (hash<std::string>()(k.name) << 1)) >> 1);
   }
 };
 
