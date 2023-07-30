@@ -18,9 +18,9 @@ public:
 //    Node(const Node&) = delete;
 //    Node& operator=(const Node&) = delete;
 
-    const int& getX(){return x;}
-    const int& getY(){return y;}
-    void setX(const int& value)
+    int getX() const {return x;}
+    int getY() const {return y;}
+    void setX(const int value)
     {
         if(x == UNDEFINED)
         {
@@ -28,10 +28,10 @@ public:
         }
         else
         {
-            throw "coordinate 'x' has already initialized";
+            throw "coordinate 'x' was initialized";
         }
     }
-     void  setY(const int& value)
+     void  setY(const int value)
     {
         if(y == UNDEFINED)
         {
@@ -39,7 +39,7 @@ public:
         }
         else
         {
-            throw "coordinate 'y' has already initialized";
+            throw "coordinate 'y' was initialized";
         }
     }
 
