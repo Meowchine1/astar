@@ -39,7 +39,7 @@ void Graph::readtxt(std::string filePath)
             std::string word;
             while (ss >> word) { // Extract word from the stream.
 
-                if(i == 0){ // for node with coordinates (first elem in line)
+                if(i == 0){ // way for node with coordinates (first elem in line)
                     nodename = getSubstring(word, pos, '(');
                     x = std::stoi(getSubstring(word, pos, ','));
                     y = std::stoi(getSubstring(word, pos, ')'));
@@ -50,18 +50,19 @@ void Graph::readtxt(std::string filePath)
                         return elem.name == nodename;
                     });
 
-                    if (it != nodes.end()) {
+                    if (it != nodes.end()) { // if node has already initialized
                         ptrMainNode = &(*it);
 
                         it->setX(x);
                         it->setY(y);
                     }
-                    else
+                    else // if uninitialized node
                     {
-                        Node node(nodename, x, y);
-                        ptrMainNode = &node;
+                        ptrMainNode = new Node(nodename, x, y);
                         edges_weights[*ptrMainNode] =
                                 std::unordered_map<Node, int>();
+                        nodes.push_back(*ptrMainNode);
+
 
                     }
                 }
@@ -79,16 +80,17 @@ void Graph::readtxt(std::string filePath)
                     }
                     else
                     {
-                        Node neighbornode(nodename);
-                        ptrNeighborNode = &neighbornode;
+                        ptrNeighborNode = new Node(nodename);
+                        nodes.push_back(*ptrNeighborNode);
                     }
 
                     edges_weights[*ptrMainNode][*ptrNeighborNode] = weight;
-
-                    break;
                 }
                 i++;
             }
+            std::cout << std::endl;std::cout << std::endl;
+//            delete ptrMainNode;
+//            delete ptrNeighborNode;
 
         }
         std::cout << std::endl;
@@ -104,20 +106,24 @@ int Graph::get_edge_weight(const Node& keyNode, const Node& childNode)
     return 0;
 }
 
-void printGraph()
+void Graph::printGraph()
 {
-    for (auto it = edges_weights.begin(); it != edges_weights.end(); ++it) {
-        const Node&amp; key1 = it-&gt;first;
-        const std::unordered_map&lt;Node, int&gt;&amp; innerMap = it-&gt;second;
+    // std::unordered_map<Node, std::unordered_map<Node, int>>
+    for (auto& pair : edges_weights) {
+        const Node& keyNode = pair.first;
+        std::unordered_map<Node, int>& innerMap = pair.second;
+        std::cout<<"Vertex is "<< keyNode.name << " coordinates("
+                <<keyNode.getX()<<";"<<keyNode.getY()<<"\t neighbors: ";
+        // Перебор внутреннего unordered_map
+        for (auto& innerPair : innerMap) {
+            const Node& childNode = innerPair.first;
+            int value = innerPair.second;
+            std::cout<< "name:" << childNode.name << " coordinates("
+                     << childNode.getX() << ";" << childNode.getY() <<
+                       ") " << " weight = " << value << "\n";
 
-        std::cout &lt;&lt; "Outer key: " &lt;&lt; key1 &lt;&lt; std::endl;
-
-        for (auto innerIt = innerMap.begin(); innerIt != innerMap.end(); ++innerIt) {
-            const Node&amp; key2 = innerIt-&gt;first;
-            int value = innerIt-&gt;second;
-
-            std::cout &lt;&lt; "Inner key: " &lt;&lt; key2 &lt;&lt; ", Value: " &lt;&lt; value &lt;&lt; std::endl;
         }
     }
+
 }
 
