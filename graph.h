@@ -4,6 +4,8 @@
 #include "node.h"
 #include <string>
 
+typedef std::unordered_map<Node*, std::unordered_map<Node*, int>> specified_map;
+
 template <>
 struct std::hash<Node>
 {
@@ -16,7 +18,7 @@ struct std::hash<Node>
     // second and third and combine them using XOR
     // and bit shifting:
 
-    return ((hash<int>()(k.distance)
+    return ((hash<unsigned int>()(k.getDistance())
              ^ (hash<std::string>()(k.name) << 1)) >> 1);
   }
 };
@@ -24,11 +26,13 @@ struct std::hash<Node>
 class Graph
 {
 private:
-    std::unordered_map<Node*, std::unordered_map<Node*, int>> edges_weights;
+    specified_map edges_weights;
     void readtxt(std::string filePath);
 public:
     Graph(std::string filePath);
     Graph();
+    specified_map get_edges_weights(){return edges_weights;}
+
     void set_relation(Node* from, Node* to, int weight);
     int get_edge_weight(const Node* keyNode, const Node* childNode);
     void printGraph();
