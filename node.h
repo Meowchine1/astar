@@ -20,7 +20,7 @@ public:
 
     int getX() const {return x;}
     int getY() const {return y;}
-    int getDistance(){return distance;}
+    int getDistance() const {return distance;}
     void setX(const int value)
     {
         if(x == UNDEFINED)
