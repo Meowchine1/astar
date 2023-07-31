@@ -10,5 +10,6 @@ int main(int argc, char *argv[])
             .append("../astar/data/graph.txt");
     std::cout<<path;
     Graph graph(path);
+    graph.printGraph();
     return 0;
 }
