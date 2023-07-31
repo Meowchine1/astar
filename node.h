@@ -8,10 +8,9 @@ class Node
 
 private:
     int x = UNDEFINED, y = UNDEFINED;
+    unsigned int distance = 0; // f(v);
 public:
     const std::string name;
-    int distance = 0; // f(v)
-
     Node(const std::string _name);
     Node(const std::string _name, int _x, int _y);
     ~Node();
@@ -21,6 +20,7 @@ public:
 
     int getX() const {return x;}
     int getY() const {return y;}
+    int getDistance(){return distance;}
     void setX(const int value)
     {
         if(x == UNDEFINED)
@@ -43,6 +43,10 @@ public:
             throw "coordinate 'y' was initialized";
         }
     }
+     void setDistance(unsigned int value)
+     {
+         distance = value;
+     }
 
     bool operator>(const Node& node) const
     {
