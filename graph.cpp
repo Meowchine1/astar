@@ -21,7 +21,7 @@ void Graph::readtxt(std::string filePath)
     std::ifstream in(filePath);
     std::cout<<std::endl;
 
-    std::vector<Node> nodes;
+    std::vector<Node*> nodes;
 
     if (in.is_open())
     {
@@ -46,22 +46,21 @@ void Graph::readtxt(std::string filePath)
 
                     // iterator to find vector element
                     auto it = std::find_if(nodes.begin(),
-                                           nodes.end(), [&](const Node& elem) {
-                        return elem.name == nodename;
+                                           nodes.end(), [&](const Node* elem) {
+                        return elem->name == nodename;
                     });
 
                     if (it != nodes.end()) { // if node has already initialized
-                        ptrMainNode = &(*it);
-
-                        it->setX(x);
-                        it->setY(y);
+                        ptrMainNode = *it;
+                        ptrMainNode->setX(x);
+                        ptrMainNode->setY(y);
                     }
                     else // if uninitialized node
                     {
                         ptrMainNode = new Node(nodename, x, y);
-                        edges_weights[*ptrMainNode] =
-                                std::unordered_map<Node, int>();
-                        nodes.push_back(*ptrMainNode);
+                        edges_weights[ptrMainNode] =
+                                std::unordered_map<Node*, int>();
+                        nodes.push_back(ptrMainNode);
 
 
                     }
@@ -71,20 +70,20 @@ void Graph::readtxt(std::string filePath)
                     nodename = getSubstring(word, pos, '(');
                     weight = std::stoi(getSubstring(word, pos, ')'));
                     auto it = std::find_if(nodes.begin(),
-                                           nodes.end(), [&](const Node& elem) {
-                        return elem.name == nodename;
+                                           nodes.end(), [&](const Node* elem) {
+                        return elem->name == nodename;
                     });
 
                     if (it != nodes.end()) {
-                        ptrNeighborNode = &(*it);
+                        ptrNeighborNode = *it;
                     }
                     else
                     {
                         ptrNeighborNode = new Node(nodename);
-                        nodes.push_back(*ptrNeighborNode);
+                        nodes.push_back(ptrNeighborNode);
                     }
 
-                    edges_weights[*ptrMainNode][*ptrNeighborNode] = weight;
+                    edges_weights[ptrMainNode][ptrNeighborNode] = weight;
                 }
                 i++;
             }
@@ -110,16 +109,16 @@ void Graph::printGraph()
 {
     // std::unordered_map<Node, std::unordered_map<Node, int>>
     for (auto& pair : edges_weights) {
-        const Node& keyNode = pair.first;
-        std::unordered_map<Node, int>& innerMap = pair.second;
-        std::cout<<"Vertex is "<< keyNode.name << " coordinates("
-                <<keyNode.getX()<<";"<<keyNode.getY()<<"\t neighbors: ";
+        const Node* keyNode = pair.first;
+        std::unordered_map<Node*, int>& innerMap = pair.second;
+        std::cout<<"Vertex is "<< keyNode->name << " coordinates("
+                <<keyNode->getX()<<";"<<keyNode->getY()<<")\t neighbors: ";
         // Перебор внутреннего unordered_map
         for (auto& innerPair : innerMap) {
-            const Node& childNode = innerPair.first;
+            const Node* childNode = innerPair.first;
             int value = innerPair.second;
-            std::cout<< "name:" << childNode.name << " coordinates("
-                     << childNode.getX() << ";" << childNode.getY() <<
+            std::cout<< "name:" << childNode->name << " coordinates("
+                     << childNode->getX() << ";" << childNode->getY() <<
                        ") " << " weight = " << value << "\n";
 
         }

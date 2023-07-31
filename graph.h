@@ -24,7 +24,7 @@ struct std::hash<Node>
 class Graph
 {
 private:
-    std::unordered_map<Node, std::unordered_map<Node, int>> edges_weights;
+    std::unordered_map<Node*, std::unordered_map<Node*, int>> edges_weights;
     void readtxt(std::string filePath);
 public:
     Graph(std::string filePath);
