@@ -8,6 +8,63 @@
 #include "splitter.h"
 
 Graph::Graph(std::string filePath){readtxt(filePath);}
+Graph::Graph()
+{
+    edges_weights = {};
+}
+
+int Graph::get_edge_weight(const Node* keyNode, const Node* childNode)
+{
+    auto it = edges_weights.find(const_cast<Node*>(keyNode));
+    if (it != edges_weights.end()) {
+        const std::unordered_map<Node*, int>& innerMap = it->second;
+
+        auto innerIt = innerMap.find(const_cast<Node*>(childNode));
+        if (innerIt != innerMap.end())
+        {
+            return innerIt->second;
+        }
+        else
+        {
+            std::stringstream ss;
+            ss<<"Realtions between " << keyNode->name << " and " << childNode->name
+             << " aren't exist.";
+            throw ss;
+        }
+    } else
+    {
+        std::stringstream ss;
+        ss<<"The node" << keyNode->name << " unexists.";
+        throw ss;
+    }
+}
+
+void Graph::set_relation(Node *from, Node *to, int weight)
+{
+
+    auto it = std::find_if(edges_weights.begin(),
+                           edges_weights.end(), [&](const auto& elem) {
+        return elem.first == from;
+    });
+    if(it != edges_weights.end())
+    {
+        edges_weights[from][to] = weight;
+    }
+    else
+    {
+        edges_weights[from] = std::unordered_map<Node*, int>();
+        edges_weights[from][to] = weight;
+    }
+}
+
+Graph::~Graph()
+{
+    for (auto& pair : edges_weights)
+    {
+        pair.second.clear();
+    }
+    edges_weights.clear();
+}
 
 void Graph::readtxt(std::string filePath)
 {
@@ -66,7 +123,7 @@ void Graph::readtxt(std::string filePath)
                     }
                 }
                 else{
-                // for neighbors
+                    // for neighbors
                     nodename = getSubstring(word, pos, '(');
                     weight = std::stoi(getSubstring(word, pos, ')'));
                     auto it = std::find_if(nodes.begin(),
@@ -88,8 +145,8 @@ void Graph::readtxt(std::string filePath)
                 i++;
             }
             std::cout << std::endl;std::cout << std::endl;
-//            delete ptrMainNode;
-//            delete ptrNeighborNode;
+            //            delete ptrMainNode;
+            //            delete ptrNeighborNode;
 
         }
         std::cout << std::endl;
@@ -100,26 +157,19 @@ void Graph::readtxt(std::string filePath)
     return;
 }
 
-int Graph::get_edge_weight(const Node& keyNode, const Node& childNode)
-{
-    return 0;
-}
-
 void Graph::printGraph()
 {
-    // std::unordered_map<Node, std::unordered_map<Node, int>>
     for (auto& pair : edges_weights) {
         const Node* keyNode = pair.first;
         std::unordered_map<Node*, int>& innerMap = pair.second;
         std::cout<<"Vertex is "<< keyNode->name << " coordinates("
                 <<keyNode->getX()<<";"<<keyNode->getY()<<")\t neighbors: ";
-        // Перебор внутреннего unordered_map
         for (auto& innerPair : innerMap) {
             const Node* childNode = innerPair.first;
             int value = innerPair.second;
             std::cout<< "name:" << childNode->name << " coordinates("
                      << childNode->getX() << ";" << childNode->getY() <<
-                       ") " << " weight = " << value << "\n";
+                        ") " << " weight = " << value << "\n";
 
         }
     }

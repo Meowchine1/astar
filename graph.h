@@ -28,8 +28,11 @@ private:
     void readtxt(std::string filePath);
 public:
     Graph(std::string filePath);
-    int get_edge_weight(const Node& keyNode, const Node& childNode);
+    Graph();
+    void set_relation(Node* from, Node* to, int weight);
+    int get_edge_weight(const Node* keyNode, const Node* childNode);
     void printGraph();
+    ~Graph();
 };
 
 #endif // GRAPH_H
