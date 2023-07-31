@@ -2,7 +2,7 @@
 #include "node.h"
 #include "graph.h"
 #include "heuristic.h"
-#include <queue>
+#include <algorithm>
 
 Astar::Astar(){}
 
@@ -37,12 +37,16 @@ std::string Astar::run(Node* start, Node* goal, Graph graph)
                 Node* child = pair.first;
                 int pathWeight = pair.second;
 
-                if(visited.find(child) != visited.end()
-                        || pathWeight < minWay[child])
+                if(std::find(visited.begin(),
+                             visited.end(), child) != visited.end()
+                        || minWay[currentptr] + pathWeight < minWay[child])
                 {
                     parent[child] = currentptr;
                     minWay[child] = pathWeight;
-                    unsigned int distance = heuristic_Manhattan(currentptr, child);
+                    unsigned int heuristic =
+                            heuristic_Manhattan(currentptr, child);
+                    child->setDistance(heuristic + pathWeight);
+
                 }
             }
        }
