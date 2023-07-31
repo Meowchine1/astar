@@ -9,7 +9,8 @@ class Astar
 {
 public:
     Astar();
-    std::string run(Node* start, Node* goal, Graph graph);
+    std::string run(Node* start, Node* goal, Graph& graph);
+    std::string restorePath(Node* start, Node* goal);
 
 
 private:
