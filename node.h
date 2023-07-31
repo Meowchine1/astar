@@ -14,9 +14,10 @@ public:
 
     Node(const std::string _name);
     Node(const std::string _name, int _x, int _y);
+    ~Node();
 
-//    Node(const Node&) = delete;
-//    Node& operator=(const Node&) = delete;
+    Node(const Node&) = delete;
+    Node& operator=(const Node&) = delete;
 
     int getX() const {return x;}
     int getY() const {return y;}
