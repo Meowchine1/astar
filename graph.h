@@ -5,6 +5,7 @@
 #include <string>
 
 typedef std::unordered_map<Node*, std::unordered_map<Node*, int>> specified_map;
+typedef std::unordered_map<Node*, int> inner_map;
 
 template <>
 struct std::hash<Node>
@@ -32,6 +33,10 @@ public:
     Graph(std::string filePath);
     Graph();
     specified_map get_edges_weights(){return edges_weights;}
+    inner_map get_edges_weights(Node* keyNode)
+    {
+        return edges_weights[keyNode];
+    }
 
     void set_relation(Node* from, Node* to, int weight);
     int get_edge_weight(const Node* keyNode, const Node* childNode);
