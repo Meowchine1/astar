@@ -31,11 +31,11 @@ std::string Astar::restorePath(Node* start, Node* goal)
     Node* ptrtemp{nullptr};
     while (ptrNode != start)
     {
-        path+ptrNode->name+" -> ";
+        path = ptrNode->name + " -> " + path;
         ptrtemp = parent[ptrNode];
         ptrNode = ptrtemp;
     }
-
+    path = start->name + " -> " + path;
     return path;
 }
 
