@@ -16,7 +16,7 @@ Astar::Astar(){}
     std::unordered_map<Node*, int> minWay;
 */
 
-void fill(std::unordered_map<Node*, int>& minWay, Graph& graph)
+void fillMax(std::unordered_map<Node*, int>& minWay, Graph& graph)
 {
     for (auto& pair : graph.get_edges_weights())
     {
@@ -41,14 +41,13 @@ std::string Astar::restorePath(Node* start, Node* goal)
 
 std::string Astar::run(Node* start, Node* goal, Graph& graph)
 {
-    queue.push(start);
-    fill(minWay, graph);
+    queue.push_back(start);
+    fillMax(minWay, graph);
     minWay[start] = 0;
     Node* currentptr = {nullptr};
     while(!queue.empty())
     {
-       currentptr = queue.top();
-       queue.pop();
+       currentptr = queue.front(); queue.erase(queue.begin());
        if(currentptr == goal)
        {
            return restorePath(start, goal);
@@ -74,12 +73,21 @@ std::string Astar::run(Node* start, Node* goal, Graph& graph)
                     unsigned int heuristic =
                             heuristic_Manhattan(child, goal);
                     child->setDistance(heuristic + pathWeight);
-                    queue.push(child);
+
+                    auto it = std::find(queue.begin(), queue.end(), child);
+                    if (it != queue.end()) {
+                        std::make_heap(queue.begin(), queue.end());
+                    }
+                    else{
+                        queue.push_back(child);
+                        std::sort(queue.begin(), queue.end());
+                    }
+//                    std::make_heap(queue.begin(), queue.end());
+//                    std::sort(queue.begin(), queue.end());
 
                 }
             }
        }
-       //for(auto& pair : graph.get_edges_weights())
     }
 
     return "";

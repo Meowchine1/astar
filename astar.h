@@ -12,9 +12,9 @@ public:
     std::string run(Node* start, Node* goal, Graph& graph);
     std::string restorePath(Node* start, Node* goal);
 
-
 private:
-    std::priority_queue<Node*, std::vector<Node*>, std::greater<Node*>> queue;
+    //std::priority_queue<Node*, std::vector<Node*>, std::greater<Node*>> queue;
+    std::vector<Node*> queue;
     std::vector<Node*> visited;
     std::unordered_map<Node*, Node*> parent;
     std::unordered_map<Node*, int> minWay;
