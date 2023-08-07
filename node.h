@@ -1,10 +1,13 @@
 #ifndef NODE_H
 #define NODE_H
 #include <string>
-
+#include <QObject>
 #define UNDEFINED 1435483
-class Node
+
+class Node : public QObject
 {
+
+    Q_OBJECT
 
 private:
     int x = UNDEFINED, y = UNDEFINED;
@@ -48,30 +51,12 @@ public:
          distance = value;
      }
 
-    bool operator>(const Node& node) const
-    {
-        return this->distance > node.distance;
-    }
+signals:
 
-    bool operator<(const Node& node) const
-    {
-        return !(this->distance > node.distance);
-    }
+    void sendNode(Node* node);
 
-    bool operator>=(const Node& node) const
-    {
-        return this->distance >= node.distance;
-    }
-
-    bool operator<=(const Node& node) const
-    {
-        return !(this->distance >= node.distance);
-    }
-
-    bool operator==(const Node& node) const
-     { return this->name == node.name;
-     }
-
+public slots:
+    void createNodeRequest(std::string name, int x, int y);
 };
 
 #endif // NODE_H

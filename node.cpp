@@ -8,3 +8,9 @@ Node::Node(const std::string _name, int _x, int _y):
 {}
 Node::~Node(){}
 
+void Node::createNodeRequest(std::string name, int x, int y)
+{
+    Node node(name, x, y);
+    emit sendNode(&node);
+}
+
