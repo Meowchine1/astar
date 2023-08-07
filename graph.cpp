@@ -13,6 +13,43 @@ Graph::Graph()
     edges_weights = {};
 }
 
+/*************************************************************************************************************************************************/
+
+void Graph::createEmptyGraphRequest()
+{
+    Graph graph;
+    emit sendGraph(&graph);
+}
+
+void Graph::readGraphFromTxtRequest(std::string path)
+{
+    Graph graph(path);
+    emit sendGraph(&graph);
+}
+
+
+ void Graph::addNodeRequest(Node* node)
+ {
+     this->addNode(node);
+     emit sendGraph(this);
+ }
+
+
+void Graph::addRelationsRequest(Node* from, Node* to, int weight)
+{
+    this->set_relation(from, to, weight);
+    emit sendGraph(this);
+}
+
+/*************************************************************************************************************************************************/
+
+void Graph::addNode(Node* node)
+{
+    edges_weights[node] =
+            std::unordered_map<Node*, int>();
+
+}
+
 int Graph::get_edge_weight(const Node* keyNode, const Node* childNode)
 {
     auto it = edges_weights.find(const_cast<Node*>(keyNode));
@@ -118,8 +155,6 @@ void Graph::readtxt(std::string filePath)
                         edges_weights[ptrMainNode] =
                                 std::unordered_map<Node*, int>();
                         nodes.push_back(ptrMainNode);
-
-
                     }
                 }
                 else{
