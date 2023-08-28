@@ -9,11 +9,10 @@ class Astar
 {
 public:
     Astar();
-    std::string run(Node* start, Node* goal, Graph& graph);
-    std::string restorePath(Node* start, Node* goal);
+    QString run(Node* start, Node* goal, Graph *graph);
+    QString restorePath(Node* start, Node* goal);
 
 private:
-    //std::priority_queue<Node*, std::vector<Node*>, std::greater<Node*>> queue;
     std::vector<Node*> queue;
     std::vector<Node*> visited;
     std::unordered_map<Node*, Node*> parent;

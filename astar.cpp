@@ -1,11 +1,13 @@
-#include "astar.h"
-#include "node.h"
-#include "graph.h"
-#include "heuristic.h"
 #include <algorithm>
 #include <limits.h>
 #include <iostream>
 #include <string>
+#include <QString>
+
+#include "astar.h"
+#include "node.h"
+#include "graph.h"
+#include "heuristic.h"
 
 Astar::Astar(){}
 
@@ -16,17 +18,17 @@ Astar::Astar(){}
     std::unordered_map<Node*, int> minWay;
 */
 
-void fillMax(std::unordered_map<Node*, int>& minWay, Graph& graph)
+void fillMax(std::unordered_map<Node*, int>& minWay, Graph* graph)
 {
-    for (auto& pair : graph.get_edges_weights())
+    for (auto& pair : graph->get_edges_weights())
     {
         minWay[pair.first] = INT_MAX;
     }
 }
 
-std::string Astar::restorePath(Node* start, Node* goal)
+QString Astar::restorePath(Node* start, Node* goal)
 {
-    std::string path;
+    QString path;
     Node* ptrNode = goal;
     Node* ptrtemp{nullptr};
     while (ptrNode != start)
@@ -36,11 +38,10 @@ std::string Astar::restorePath(Node* start, Node* goal)
         ptrNode = ptrtemp;
     }
     path = start->name + " -> " + path;
-    // to do удалить последнюю стрелку (2 последних символа)
     return path;
 }
 
-std::string Astar::run(Node* start, Node* goal, Graph& graph)
+QString Astar::run(Node* start, Node* goal, Graph* graph)
 {
     queue.push_back(start);
     fillMax(minWay, graph);
@@ -55,10 +56,10 @@ std::string Astar::run(Node* start, Node* goal, Graph& graph)
        }
 
        visited.push_back(currentptr);
-       auto it = graph.get_edges_weights().find(const_cast<Node*>(currentptr));
-       if(it != graph.get_edges_weights().end())
+       auto it = graph->get_edges_weights().find(const_cast<Node*>(currentptr));
+       if(it != graph->get_edges_weights().end())
        {
-            for(auto& pair : graph.get_edges_weights(currentptr))
+            for(auto& pair : graph->get_edges_weights(currentptr))
             {
                 Node* child = pair.first;
                 int pathWeight = pair.second;
@@ -75,15 +76,13 @@ std::string Astar::run(Node* start, Node* goal, Graph& graph)
 
                     auto it = std::find(queue.begin(), queue.end(), child);
                     if (it != queue.end()) { // нужно перестроить вектор тк существующий в векторе узел изменился
+                        // попробовать с очередью приоритетов
 
                         std::make_heap(queue.begin(), queue.end());
                     }
                     else{
                         queue.push_back(child);
-                        std::sort(queue.begin(), queue.end(), [](Node* a, Node* b)
-                        {
-                            return a->getDistance() < b->getDistance();
-                        });
+                        std::sort(queue.begin(), queue.end());
                     }
 
                 }
@@ -91,5 +90,5 @@ std::string Astar::run(Node* start, Node* goal, Graph& graph)
        }
     }
 
-    return "";
+    return "no path";
 }
