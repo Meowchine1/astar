@@ -10,8 +10,6 @@ namespace fs = std::filesystem;
 int main(int argc, char *argv[])
 {
     StrongConnection graph;
-    graph.createRandomNew();
-    graph.print();
 
 
 

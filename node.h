@@ -17,6 +17,7 @@ public:
     Node(const QString _name);
     Node(const QString _name, int _x, int _y);
 
+    Node(){}
     // ////
     bool isolated;
     std::vector<Node*> children;
@@ -67,5 +68,9 @@ public:
 
 };
 
+//std::ostream& operator << (std::ostream &os, const Node &node)
+//{
+//    return os << node.name;
+//}
 
 #endif // NODE_H
